@@ -1,3 +1,4 @@
+import EnumPrefab from "../../Framework/Auto/EnumPrefab";
 import MsgFullScreen from "../../Framework/Interface/Msg/MsgFullScreen";
 import g_global from "../../Script/GameGlobal";
 
@@ -67,6 +68,6 @@ export default class MsgMyCardWaterMargin extends MsgFullScreen {
   }
 
   openTurntable(){
-    g_global.msgManager.show("MsgWaterMarginTurntable");
+    g_global.msgManager.show(EnumPrefab.MsgWaterMarginTurntable);
   }
 }
