@@ -1,4 +1,3 @@
-import { prefabPaths } from "../AutoConfig/PrefabPaths";
 import MsgManager from "../Framework/Interface/Msg/MsgManager";
 import { EnumOpenSceneMethod } from "../Framework/Manager/EnumOpenSceneMethod";
 import NetManager from "../Framework/Manager/NetManager/NetManager";
