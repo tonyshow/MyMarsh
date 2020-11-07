@@ -1,0 +1,36 @@
+{
+  "ver": "2.3.5",
+  "uuid": "e33734e6-40d1-45cb-af18-dfa027e48b51",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 102,
+  "height": 98,
+  "platformSettings": {},
+  "subMetas": {
+    "WaterMarginMyCardBg": {
+      "ver": "1.0.4",
+      "uuid": "fa5a3ae9-cfa3-43df-9355-384a6ba98992",
+      "rawTextureUuid": "e33734e6-40d1-45cb-af18-dfa027e48b51",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 102,
+      "height": 98,
+      "rawWidth": 102,
+      "rawHeight": 98,
+      "borderTop": 27,
+      "borderBottom": 26,
+      "borderLeft": 28,
+      "borderRight": 27,
+      "subMetas": {}
+    }
+  }
+}
