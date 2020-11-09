@@ -1,9 +1,13 @@
 import EnumPrefab from "../../Framework/Auto/EnumPrefab";
 import CompGrid from "../../Framework/Components/CompGrid";
 import CompPageView from "../../Framework/Components/CompPageView";
+import CompTimer from "../../Framework/Components/CompTimer";
+import EnumTime from "../../Framework/Enum/EnumTime";
 import MsgFullScreen from "../../Framework/Interface/Msg/MsgFullScreen";
 import ResUtil from "../../Framework/Manager/ResManager/ResUtil";
 import g_global from "../../Script/GameGlobal";
+import WaterMaiginDataManager from "./Data/WaterMaiginDataManager";
+import WaterMarginSimplyFace from "./WaterMarginSimplyFace";
 
 const { ccclass, property } = cc._decorator;
 @ccclass
@@ -36,7 +40,12 @@ export default class MsgMyCardWaterMargin extends MsgFullScreen {
   myCardPageView: CompPageView = null;
 
 
+  @property({ tooltip: "倒计时", type: CompTimer })
+  compTime: CompTimer = null;
+
+  simplyFaceCompList=[];
   async onLoad() {
+    this.eveList.push(["refeshSimplyFace",this.refeshSimplyFace.bind(this)])
     await super.onLoad();
     this.enterMySimplyFace();
     //this.enterMyCards()
@@ -62,23 +71,48 @@ export default class MsgMyCardWaterMargin extends MsgFullScreen {
     this.MySimplyFace.setContentSize(new cc.Size(cc.winSize.width,selfsize.height));
     this.MyCards.setContentSize(selfsize);
     this.pageView.setContentSize(selfsize);
-
-
-    for(let i = 0 ; i <8;++i){
+    let dataManager:WaterMaiginDataManager = g_global.dataManager as WaterMaiginDataManager
+    for(let i = 0 ; i < dataManager.getSimplyFaceMaxCnt();++i){
       if(i == 0 ){
         let tempSize = this.MyCardArea.getContentSize()
         this.compGrid.setSelfSize(tempSize)
         this.compGrid.setItemSize(new cc.Size(selfsize.width/4,tempSize.height/2))
       }
-      let simplyFaceNode = await ResUtil.getNodeByEnumPrefab(this.enumPrefab);
+      let simplyFaceComp :WaterMarginSimplyFace= await ResUtil.getCompByEnumPrefab(this.enumPrefab,this.MyCardArea);
+      this.simplyFaceCompList.push(simplyFaceComp)
+      simplyFaceComp.setHave(i<dataManager.getMySimplyFaceCnt())
+      let simplyFaceNode =  simplyFaceComp.node
       simplyFaceNode.setContentSize(this.compGrid.getItemSize())
-      this.MyCardArea.addChild( simplyFaceNode )
       simplyFaceNode.setPosition(this.compGrid.getPosition())
-
-      this.myCardPageView.addPage();
     }
 
-
+    for( let i = 1;i<= 109;++i ){
+      if(i%4==0 || i==109){
+        let cards = [];
+        if( i==109){
+          cards.push( i )
+        }else{
+          for( let id=i-4;id<i;++id ){
+            cards.push( id+1 )
+          }
+        }
+        this.myCardPageView.addPage(cards);
+      }
+    }
+    this.compTime.setSpaceTime(dataManager.simplyFaceTimeSpace)
+    this.compTime.refreshEndTime(dataManager.getNextSimplyFaceTime(),EnumTime.TIMESTAMP);
+    this.compTime.registerEndCallBack( ()=>{
+      console.log("添加一张干脆面")
+      dataManager.timeoutFinsh()
+      this.refeshSimplyFace();
+      this.compTime.refreshEndTime(dataManager.getNextSimplyFaceTime(),EnumTime.TIMESTAMP);
+    });
+  }
+  refeshSimplyFace(){
+    let dataManager:WaterMaiginDataManager = g_global.dataManager as WaterMaiginDataManager
+    for(let i = 0 ; i < dataManager.getSimplyFaceMaxCnt();++i){
+      this.simplyFaceCompList[i].setHave(i<dataManager.getMySimplyFaceCnt())
+    }
   }
   enterMyCards() {
     this.buttonCards.setScale(1.06);

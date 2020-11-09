@@ -1,0 +1,20 @@
+{
+  "ver": "1.1.2",
+  "uuid": "5eaed08e-d6fc-4f7c-8a72-f0e4aec1f58a",
+  "isBundle": true,
+  "bundleName": "iconcardbg2",
+  "priority": 1,
+  "compressionType": {
+    "wechatgame": "subpackage"
+  },
+  "optimizeHotUpdate": {
+    "wechatgame": false
+  },
+  "inlineSpriteFrames": {
+    "wechatgame": true
+  },
+  "isRemoteBundle": {
+    "wechatgame": false
+  },
+  "subMetas": {}
+}

@@ -1,7 +1,7 @@
 import Player from "../../Framework/Data/Player"
 
 export default class WaterMarginPlayer extends Player{
-  public vidoCardCnt:number = 3;//视频卡数量
+  public vidoCardCnt:number = 0;//视频卡数量
 
   /**
    * 消耗视频卡

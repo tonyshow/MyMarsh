@@ -4,11 +4,30 @@
       true
     ]
   ],
-  "excluded-modules": [],
+  "excluded-modules": [
+    "Collider",
+    "DragonBones",
+    "Graphics",
+    "Geom Utils",
+    "Mask",
+    "Mesh",
+    "MotionStreak",
+    "NodePool",
+    "Native Socket",
+    "Physics",
+    "ParticleSystem",
+    "ScrollView",
+    "Toggle",
+    "3D",
+    "3D Primitive",
+    "3D Physics/cannon.js",
+    "3D Physics/Builtin",
+    "3D Particle"
+  ],
   "group-list": [
     "default"
   ],
-  "start-scene": "18ba8924-c87c-4e28-8ea4-8b774101c340",
+  "start-scene": "ebcfabed-814b-4a98-bd37-201172caf981",
   "design-resolution-width": 960,
   "design-resolution-height": 640,
   "fit-width": false,

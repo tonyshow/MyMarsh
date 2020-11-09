@@ -1,10 +1,13 @@
 import EnumPrefab from "../../Framework/Auto/EnumPrefab";
 import g_global from "../../Script/GameGlobal";
+import WaterMaiginDataManager from "./Data/WaterMaiginDataManager";
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 @ccclass
 export default class WaterMargin extends cc.Component {
-     onLoad () {
-       g_global.msgManager.show(EnumPrefab.MsgMyCardWaterMargin);
-     }
+  async onLoad() {
+    (g_global.dataManager as WaterMaiginDataManager).refreshLocalData();
+    g_global.msgManager.show(EnumPrefab.MsgMyCardWaterMargin);
+
+  }
 }

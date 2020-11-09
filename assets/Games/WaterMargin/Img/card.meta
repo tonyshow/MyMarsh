@@ -1,0 +1,24 @@
+{
+  "ver": "1.1.2",
+  "uuid": "a35d03c0-6e85-4049-a896-ede962ba1ac0",
+  "isBundle": true,
+  "bundleName": "iconcard",
+  "priority": 1,
+  "compressionType": {
+    "web-mobile": "default",
+    "wechatgame": "subpackage"
+  },
+  "optimizeHotUpdate": {
+    "web-mobile": false,
+    "wechatgame": false
+  },
+  "inlineSpriteFrames": {
+    "web-mobile": true,
+    "wechatgame": true
+  },
+  "isRemoteBundle": {
+    "web-mobile": false,
+    "wechatgame": false
+  },
+  "subMetas": {}
+}

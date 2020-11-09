@@ -1,16 +1,15 @@
-import MsgManager from "../Framework/Interface/Msg/MsgManager";
 import { EnumOpenSceneMethod } from "../Framework/Manager/EnumOpenSceneMethod";
-import NetManager from "../Framework/Manager/NetManager/NetManager";
+import WaterMaiginDataManager from "../Games/WaterMargin/Data/WaterMaiginDataManager";
+import WaterMarginPlayer from "../Games/WaterMargin/WaterMarginPlayer";
 import GlobalManager from "./../Framework/Manager/GlobalManager";
 export class GameGlobal extends GlobalManager {
-  netManager: NetManager = null;
-  msgManager: MsgManager = null;
   constructor() {
-    super();
-    this.netManager = new NetManager();
-    this.msgManager = new MsgManager();
+    super({
+      "dataManager": WaterMaiginDataManager,
+    });
     this.interFaceManager.setNetWaitUIPrefabName("FrameworkRotateIcon");
-    this.openSceneMethod = EnumOpenSceneMethod.FIRSTNET
+    this.openSceneMethod = EnumOpenSceneMethod.FIRSTNET;
+    (this.dataManager as WaterMaiginDataManager).create("player", WaterMarginPlayer);
   }
 }
 var g_global = new GameGlobal();
