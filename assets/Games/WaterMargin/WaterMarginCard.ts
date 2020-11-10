@@ -17,7 +17,7 @@ export default class WaterMarginCard extends Interface {
   grayMaterial: cc.Material = null;
 
   async onLoad() {
-    await  super.onLoad()
+    await super.onLoad();
     let button = this.node.getComponent(cc.Button);
     if (!button) {
       button = this.node.addComponent(cc.Button);
@@ -27,25 +27,35 @@ export default class WaterMarginCard extends Interface {
   }
 
   onClick() {
-    g_global.msgManager.show(EnumPrefab.MsgWaterMarginCardShow, this.id);
+    let isHave = (g_global.dataManager as WaterMaiginDataManager).getIsHaveCard(
+      this.id
+    );
+    if (true == isHave) {
+      g_global.msgManager.show(EnumPrefab.MsgWaterMarginCardShow, this.id);
+    } else {
+      g_global.msgSys.showPrompt("未获得卡,赶紧去赚干脆面获得卡牌吧");
+    }
   }
 
   setCardId(id) {
     this.id = id;
-    let bundle = g_global.getByKey("iconcard");
+    //let bundle = g_global.getByKey("iconcard");
     let isHave = !(g_global.dataManager as WaterMaiginDataManager).getIsHaveCard(
       this.id
     );
-    if (!!bundle) {
-      bundle.load(id + "", cc.SpriteFrame, (error, sp: cc.SpriteFrame) => {
-        if (!!error) {
-          console.log(error);
-        } else {
-          this.iconSp.spriteFrame = sp;
-          this.setGray(isHave);
-        }
-      });
-    }
+
+    this.iconSp.spriteFrame = g_global.getByKey('card'+this.id);
+    this.setGray(isHave);
+    //if (!!bundle) {
+    //  bundle.load(id + "", cc.SpriteFrame, (error, sp: cc.SpriteFrame) => {
+    //    if (!!error) {
+    //      console.log(error);
+    //    } else {
+    //      this.iconSp.spriteFrame = sp;
+    //      this.setGray(isHave);
+    //    }
+    //  });
+    //}
   }
 
   setGray(isGray: boolean = false) {
@@ -53,6 +63,8 @@ export default class WaterMarginCard extends Interface {
       0,
       !!isGray ? this.grayMaterial : this.spriteMaterial
     );
+
+    //this.node.opacity = !!isGray ? 30 : 255;
   }
 
   refreshCard(id) {

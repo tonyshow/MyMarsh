@@ -102,7 +102,6 @@ export default class MsgMyCardWaterMargin extends MsgFullScreen {
     this.compTime.setSpaceTime(dataManager.simplyFaceTimeSpace)
     this.compTime.refreshEndTime(dataManager.getNextSimplyFaceTime(),EnumTime.TIMESTAMP);
     this.compTime.registerEndCallBack( ()=>{
-      console.log("添加一张干脆面")
       dataManager.timeoutFinsh()
       this.refeshSimplyFace();
       this.compTime.refreshEndTime(dataManager.getNextSimplyFaceTime(),EnumTime.TIMESTAMP);

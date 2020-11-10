@@ -6,8 +6,9 @@ export default class WaterMaiginDataManager extends DataManager {
   mySimplyFaceCnt: number = 0; //我得干脆面数量
   simplyFaceMaxCnt: number = 8; //脆面数量上限
 
+  cardMaxCnt = 109;//卡牌总数
   nextSimplyFaceTime : number = 0;//下一个干脆面获得时间
-  simplyFaceTimeSpace:number=1*60*60*1000;//一个小时获得一个干脆面
+  simplyFaceTimeSpace:number=0.5*60*60*1000;//一个小时获得一个干脆面
   constructor(args) {
     super(args);
   }
@@ -38,7 +39,6 @@ export default class WaterMaiginDataManager extends DataManager {
       this.myAllCard = {};
       g_global.platform.localStorageSetItem("myAllCard",JSON.stringify(this.myAllCard))
     }else{
-      console.log(myAllCard)
       try {
         this.myAllCard =JSON.parse(myAllCard);
       } catch (error) {
@@ -53,7 +53,6 @@ export default class WaterMaiginDataManager extends DataManager {
     this.addSimplyFace(1);
   }
   public addSimplyFace(addCnt){
-    console.log("addSimplyFace",addCnt)
     this.mySimplyFaceCnt += addCnt
     if( this.mySimplyFaceCnt <= this.simplyFaceMaxCnt){
       g_global.platform.localStorageSetItem("mySimplyFaceCnt",this.mySimplyFaceCnt);
