@@ -10,4 +10,8 @@ export default class WaterMargin extends cc.Component {
     g_global.msgManager.show(EnumPrefab.MsgMyCardWaterMargin);
 
   }
+
+  onClick(){
+    g_global.msgManager.show(EnumPrefab.MsgMyCardWaterMargin);
+  }
 }

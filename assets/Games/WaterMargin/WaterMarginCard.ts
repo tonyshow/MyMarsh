@@ -26,36 +26,48 @@ export default class WaterMarginCard extends Interface {
     this.eveList.push(["addCard", this.refreshCard.bind(this)]);
   }
 
-  onClick() {
+  onClick(eve) {
     let isHave = (g_global.dataManager as WaterMaiginDataManager).getIsHaveCard(
       this.id
     );
     if (true == isHave) {
-      g_global.msgManager.show(EnumPrefab.MsgWaterMarginCardShow, this.id);
+      let worldPostion = this.node.convertToWorldSpaceAR(cc.Vec2.ZERO);
+      g_global.msgManager.show(EnumPrefab.MsgWaterMarginCardShow, {
+        cardId: this.id,
+        worldPostion: worldPostion,
+        size: this.node.getContentSize(),
+      });
     } else {
       g_global.msgSys.showPrompt("未获得卡,赶紧去赚干脆面获得卡牌吧");
     }
   }
 
+  getParnt(tmpNOde) {
+    //updateAlignment
+    let myParnt: cc.Node = this.node;
+    for (let i = 0; i < 100; ++i) {
+      if (!!myParnt) {
+        myParnt = this.node.parent;
+        if (!!myParnt) {
+          let Widget = myParnt.getComponent(cc.Widget);
+          if (!!Widget) {
+            Widget.updateAlignment();
+          }
+          let worldPostion = tmpNOde.convertToWorldSpaceAR(cc.Vec2.ZERO);
+          console.log(i+"获取这个节点的世界坐标",worldPostion)
+        } else {
+          break;
+        }
+      }
+    }
+  }
   setCardId(id) {
     this.id = id;
-    //let bundle = g_global.getByKey("iconcard");
     let isHave = !(g_global.dataManager as WaterMaiginDataManager).getIsHaveCard(
       this.id
     );
-
-    this.iconSp.spriteFrame = g_global.getByKey('card'+this.id);
+    this.iconSp.spriteFrame = g_global.getByKey("card" + this.id);
     this.setGray(isHave);
-    //if (!!bundle) {
-    //  bundle.load(id + "", cc.SpriteFrame, (error, sp: cc.SpriteFrame) => {
-    //    if (!!error) {
-    //      console.log(error);
-    //    } else {
-    //      this.iconSp.spriteFrame = sp;
-    //      this.setGray(isHave);
-    //    }
-    //  });
-    //}
   }
 
   setGray(isGray: boolean = false) {
@@ -63,8 +75,6 @@ export default class WaterMarginCard extends Interface {
       0,
       !!isGray ? this.grayMaterial : this.spriteMaterial
     );
-
-    //this.node.opacity = !!isGray ? 30 : 255;
   }
 
   refreshCard(id) {

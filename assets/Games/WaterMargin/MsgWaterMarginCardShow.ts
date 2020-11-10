@@ -2,10 +2,12 @@ import MsgFullScreen from "../../Framework/Interface/Msg/MsgFullScreen";
 import g_global from "../../Script/GameGlobal";
 import WaterMaiginDataManager from "./Data/WaterMaiginDataManager";
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 @ccclass
 export default class MsgWaterMarginCardShow extends MsgFullScreen {
-  id=0;
+  id = 0;
+  worldPostion=null;
+  size=null
   @property({ tooltip: "icon", type: cc.Sprite })
   iconSp: cc.Sprite = null;
 
@@ -15,24 +17,23 @@ export default class MsgWaterMarginCardShow extends MsgFullScreen {
   @property({ tooltip: "灰色材质", type: cc.Material })
   grayMaterial: cc.Material = null;
 
-  isSwitchFinsh=false
-  isGray=false
-  async onLoad(){
+  isSwitchFinsh = false;
+  isGray = false;
+  async onLoad() {
     await super.onLoad();
-    let button  = this.node.getComponent(cc.Button);
-    if(!button){
-      button=this.node.addComponent(cc.Button)
+    let button = this.node.getComponent(cc.Button);
+    if (!button) {
+      button = this.node.addComponent(cc.Button);
     }
-    this.node.on('click',this.onClick,this);
+    this.node.on("click", this.onClick, this);
   }
-
-  onClick(){
-    this.onClose()
+  onClick() {
+    this.onClose();
   }
 
   setGray(isGray: boolean = false) {
-    this.isGray=isGray;
-    if(!!isGray){
+    this.isGray = isGray;
+    if (!!isGray) {
       this.grayMaterial.setProperty(`x_count`, 100);
       this.grayMaterial.setProperty(`y_count`, 100);
     }
@@ -40,62 +41,44 @@ export default class MsgWaterMarginCardShow extends MsgFullScreen {
       0,
       !!isGray ? this.grayMaterial : this.spriteMaterial
     );
-    //this.iconSp.node.opacity = !!isGray ? 30 : 255;
   }
 
   onClickCard() {
-    if(!!this.isSwitchFinsh){
-        this.setCardId(this.id)
-        this.isSwitchFinsh=false
-        return;
-    }
-
-    if(!!this.isGray){
-      this.grayMaterial.setProperty(`x_count`, 200);
-      this.grayMaterial.setProperty(`y_count`, 200);
-    }
-
-    this.iconSp.spriteFrame = g_global.getByKey('cardbg'+this.id);
-    this.isSwitchFinsh=true
-    //let bundle = g_global.getByKey("iconcardbg2");
-    //if(this.id<=54){
-    //  bundle = g_global.getByKey("iconcardbg1");
-    //}
-    //if (!!bundle) {
-    //  bundle.load( this.id+"", cc.SpriteFrame, (error, sp: cc.SpriteFrame) => {
-    //    if (!!error) {
-    //      console.log(error);
-    //    } else {
-    //      this.iconSp.spriteFrame = sp;
-    //    }
-    //  });
-    //}
-  }
-  setCardId(id){
-    this.id = id
-    let isHave = !(g_global.dataManager as WaterMaiginDataManager).getIsHaveCard( this.id)
-    this.setGray(isHave)
-    this.iconSp.spriteFrame = g_global.getByKey('card'+this.id);
-    this.isSwitchFinsh=true
-    //let bundle = g_global.getByKey("iconcardbg2");
-    //if(this.id<=54){
-    //  bundle = g_global.getByKey("iconcardbg1");
-    //}
-    //bundle = g_global.getByKey("iconcard");
-
-    //if (!!bundle) {
-    //  bundle.load( id+"", cc.SpriteFrame, (error, sp: cc.SpriteFrame) => {
-    //    if (!!error) {
-    //      console.log(error);
-    //    } else {
-    //      this.iconSp.spriteFrame = sp;
-    //    }
-    //  });
-    //}
+    this.iconSp.node.stopAllActions()
+    let act = cc.sequence( [ cc.scaleTo(0.1,0,1) ,cc.callFunc(()=>{
+      if (!!this.isGray) {
+        this.grayMaterial.setProperty(`x_count`, 200);
+        this.grayMaterial.setProperty(`y_count`, 200);
+      }
+      this.isSwitchFinsh = this.isSwitchFinsh?false:true;
+      this.iconSp.spriteFrame = g_global.getByKey(  (this.isSwitchFinsh? "card":"cardbg") + this.id);
+    }), , cc.scaleTo(0.1,1,1) ] )
+    this.iconSp.node.runAction(act.easing(cc.easeExponentialInOut()))
   }
 
-  setData(data){
-    super.setData(data)
-    this.setCardId(data)
+
+  setCardId(id,worldPostion?:cc.Vec2,size?:cc.Size) {
+    this.id = id;
+    let isHave = !(g_global.dataManager as WaterMaiginDataManager).getIsHaveCard(
+      this.id
+    );
+    this.setGray(isHave);
+    this.iconSp.spriteFrame = g_global.getByKey("card" + this.id);
+    this.isSwitchFinsh = true;
+    let bfPos =  this.iconSp.node.getPosition()
+    if(!!worldPostion){
+      let newPostion = this.node.convertToNodeSpaceAR(worldPostion)
+      console.log("获取到新的坐标",worldPostion,newPostion,size)
+      this.iconSp.node.setPosition(newPostion)
+    }
+    this.iconSp.node.setScale(0.1,0.1)
+
+    let act = cc.spawn( [ cc.sequence([cc.scaleTo(0.1,0,0.5),cc.scaleTo(0.1,1,1)]) , cc.moveTo(1*0.08,bfPos) ] )
+    this.iconSp.node.runAction(act)
+  }
+
+  setData(data) {
+    super.setData(data);
+    this.setCardId(data.cardId,data.worldPostion,data.size);
   }
 }

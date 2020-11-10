@@ -144,7 +144,7 @@ export default class MsgWaterMarginTurntable extends MsgFullScreen {
       }
       let randId = _.random(1, 109);
       dataManager.addCard(randId);
-      g_global.msgManager.show(EnumPrefab.MsgWaterMarginCardShow, randId);
+      g_global.msgManager.show(EnumPrefab.MsgWaterMarginCardShow, {cardId:randId});
       this.isOpening=0;
     }
   }
