@@ -28,8 +28,8 @@
     "default"
   ],
   "start-scene": "ebcfabed-814b-4a98-bd37-201172caf981",
-  "design-resolution-width": 960,
-  "design-resolution-height": 640,
+  "design-resolution-width": 640,
+  "design-resolution-height": 1136,
   "fit-width": false,
   "fit-height": true,
   "use-project-simulator-setting": false,
