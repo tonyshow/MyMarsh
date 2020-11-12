@@ -3883,7 +3883,7 @@
       "__id__": 78
     },
     "_children": [],
-    "_active": true,
+    "_active": false,
     "_components": [
       {
         "__id__": 111
@@ -5288,6 +5288,7 @@
       "__id__": 1
     },
     "_enabled": true,
+    "isClickBg": false,
     "MySimplyFace": {
       "__id__": 78
     },

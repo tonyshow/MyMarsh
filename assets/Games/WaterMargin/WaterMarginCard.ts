@@ -42,25 +42,6 @@ export default class WaterMarginCard extends Interface {
     }
   }
 
-  getParnt(tmpNOde) {
-    //updateAlignment
-    let myParnt: cc.Node = this.node;
-    for (let i = 0; i < 100; ++i) {
-      if (!!myParnt) {
-        myParnt = this.node.parent;
-        if (!!myParnt) {
-          let Widget = myParnt.getComponent(cc.Widget);
-          if (!!Widget) {
-            Widget.updateAlignment();
-          }
-          let worldPostion = tmpNOde.convertToWorldSpaceAR(cc.Vec2.ZERO);
-          console.log(i+"获取这个节点的世界坐标",worldPostion)
-        } else {
-          break;
-        }
-      }
-    }
-  }
   setCardId(id) {
     this.id = id;
     let isHave = !(g_global.dataManager as WaterMaiginDataManager).getIsHaveCard(

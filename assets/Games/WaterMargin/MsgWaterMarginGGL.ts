@@ -1,6 +1,8 @@
+import MsgFullScreen from "../../Framework/Interface/Msg/MsgFullScreen";
+
 const {ccclass, property} = cc._decorator;
 @ccclass
-export default class NewClass extends cc.Component {
+export default class MsgWaterMarginGGL extends MsgFullScreen {
     // onLoad () {}
     // start () {}
     // update (dt) {}

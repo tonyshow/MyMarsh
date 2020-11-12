@@ -28,10 +28,13 @@
     "_components": [
       {
         "__id__": 10
+      },
+      {
+        "__id__": 11
       }
     ],
     "_prefab": {
-      "__id__": 11
+      "__id__": 12
     },
     "_opacity": 255,
     "_color": {
@@ -372,6 +375,17 @@
     "grayMaterial": {
       "__uuid__": "f8cbebb4-605a-4d78-813c-fa33a3a1ad08"
     },
+    "_id": ""
+  },
+  {
+    "__type__": "0a4e7qW+tlL4ar+jMy7+6eL",
+    "_name": "",
+    "_objFlags": 0,
+    "node": {
+      "__id__": 1
+    },
+    "_enabled": true,
+    "enumAudio": 1,
     "_id": ""
   },
   {

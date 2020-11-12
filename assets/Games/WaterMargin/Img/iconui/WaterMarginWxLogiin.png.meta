@@ -1,0 +1,36 @@
+{
+  "ver": "2.3.5",
+  "uuid": "aeb67418-360d-4004-b394-f26a41272370",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "width": 173,
+  "height": 46,
+  "platformSettings": {},
+  "subMetas": {
+    "WaterMarginWxLogiin": {
+      "ver": "1.0.4",
+      "uuid": "34cda036-0bff-4486-bab9-0380221b1b51",
+      "rawTextureUuid": "aeb67418-360d-4004-b394-f26a41272370",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 173,
+      "height": 46,
+      "rawWidth": 173,
+      "rawHeight": 46,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

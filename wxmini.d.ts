@@ -834,7 +834,7 @@ declare namespace wx {
     /**
      * 显示当前页面的转发按钮
      */
-    function showShareMenu(object: { withShareTicket?: boolean, success?: (res?: any) => void, fail?: (res?: any) => void, complete?: (res?: any) => void }): void;
+    function showShareMenu(object: { withShareTicket?: boolean, menus?:string[], success?: (res?: any) => void, fail?: (res?: any) => void, complete?: (res?: any) => void }): void;
 
     /**
      * 隐藏转发按钮

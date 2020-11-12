@@ -68,7 +68,6 @@ export default class MsgWaterMarginCardShow extends MsgFullScreen {
     let bfPos =  this.iconSp.node.getPosition()
     if(!!worldPostion){
       let newPostion = this.node.convertToNodeSpaceAR(worldPostion)
-      console.log("获取到新的坐标",worldPostion,newPostion,size)
       this.iconSp.node.setPosition(newPostion)
     }
     this.iconSp.node.setScale(0.1,0.1)
