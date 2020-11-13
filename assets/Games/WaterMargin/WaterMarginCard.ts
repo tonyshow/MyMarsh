@@ -1,5 +1,6 @@
 import EnumPrefab from "../../Framework/Auto/EnumPrefab";
 import Interface from "../../Framework/Interface/Interface";
+import UtilsCCC from "../../Framework/Utils/UtilsCCC";
 import g_global from "../../Script/GameGlobal";
 import WaterMaiginDataManager from "./Data/WaterMaiginDataManager";
 
@@ -42,12 +43,14 @@ export default class WaterMarginCard extends Interface {
     }
   }
 
-  setCardId(id) {
+  async setCardId(id) {
     this.id = id;
     let isHave = !(g_global.dataManager as WaterMaiginDataManager).getIsHaveCard(
       this.id
     );
-    this.iconSp.spriteFrame = g_global.getByKey("card" + this.id);
+    this.iconSp.spriteFrame = await UtilsCCC.getSpriteFrameByBundle(
+      this.id + "","iconcard"
+    );
     this.setGray(isHave);
   }
 

@@ -11,6 +11,10 @@ export class GameGlobal extends GlobalManager {
     this.openSceneMethod = EnumOpenSceneMethod.FIRSTNET;
     (this.dataManager as WaterMaiginDataManager).create("player", WaterMarginPlayer);
   }
+  init(){
+    super.init();
+    g_global.platform.initShowShareMenu();
+  }
 }
 var g_global = new GameGlobal();
 export default g_global;

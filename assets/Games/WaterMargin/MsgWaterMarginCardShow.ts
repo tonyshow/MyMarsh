@@ -1,4 +1,5 @@
 import MsgFullScreen from "../../Framework/Interface/Msg/MsgFullScreen";
+import UtilsCCC from "../../Framework/Utils/UtilsCCC";
 import g_global from "../../Script/GameGlobal";
 import WaterMaiginDataManager from "./Data/WaterMaiginDataManager";
 
@@ -19,6 +20,9 @@ export default class MsgWaterMarginCardShow extends MsgFullScreen {
 
   isSwitchFinsh = false;
   isGray = false;
+  cardSpriteFrame = null;
+  cardBfSpriteFame = null;
+  isActioning: boolean = false; //是否正在播放动画
   start() {
     if (!!this.data.worldPostion) {
       let bfPos = this.iconSp.node.getPosition();
@@ -26,13 +30,21 @@ export default class MsgWaterMarginCardShow extends MsgFullScreen {
         this.data.worldPostion
       );
       this.iconSp.node.setPosition(newPostion);
-      let scale = this.data.size.width / this.iconSp.node.getContentSize().width
+      let scale =
+        this.data.size.width / this.iconSp.node.getContentSize().width;
       this.iconSp.node.setScale(scale, scale);
       let act = cc.spawn([
         cc.scaleTo(0.3, 1, 1).easing(cc.easeBackInOut()),
         cc.moveTo(0.3, bfPos).easing(cc.easeBackInOut()),
       ]);
-      this.iconSp.node.runAction(act);
+      this.isActioning = true;
+      let acts = cc.sequence([
+        act,
+        cc.callFunc(() => {
+          this.isActioning = false;
+        }),
+      ]);
+      this.iconSp.node.runAction(acts);
     }
   }
 
@@ -43,6 +55,11 @@ export default class MsgWaterMarginCardShow extends MsgFullScreen {
       button = this.node.addComponent(cc.Button);
     }
     this.node.on("click", this.onClick, this);
+
+    this.cardBfSpriteFame = await UtilsCCC.getSpriteFrameByBundle(
+      this.id + "",
+      ["iconcardbg1", "iconcardbg2"]
+    );
   }
   onClick() {
     this.onClose();
@@ -60,8 +77,18 @@ export default class MsgWaterMarginCardShow extends MsgFullScreen {
     );
   }
 
-  onClickCard() {
+  async onClickCard() {
+    if (!!this.isActioning) {
+      return;
+    }
     this.iconSp.node.stopAllActions();
+    this.isActioning = true;
+    if (!this.cardBfSpriteFame) {
+      this.cardBfSpriteFame = await UtilsCCC.getSpriteFrameByBundle(
+        this.id + "",
+        ["iconcardbg1", "iconcardbg2"]
+      );
+    }
     let act = cc.sequence([
       cc.scaleTo(0.3, 0, 0.8).easing(cc.easeBackIn()),
       cc.callFunc(() => {
@@ -69,50 +96,37 @@ export default class MsgWaterMarginCardShow extends MsgFullScreen {
           this.grayMaterial.setProperty(`x_count`, 200);
           this.grayMaterial.setProperty(`y_count`, 200);
         }
-        this.isSwitchFinsh = this.isSwitchFinsh ? false : true;
-        this.iconSp.spriteFrame = g_global.getByKey(
-          (this.isSwitchFinsh ? "card" : "cardbg") + this.id
-        );
+        this.switchBg();
       }),
-      ,
       cc.scaleTo(0.2, 1, 1).easing(cc.easeBackOut()),
+      cc.callFunc(() => {
+        this.isActioning = false;
+      }),
     ]);
-
-    //easeExponentialInOut
     this.iconSp.node.runAction(act);
   }
-
-  setCardId(id, worldPostion?: cc.Vec2, size?: cc.Size) {
+  async switchBg() {
+    this.isSwitchFinsh = this.isSwitchFinsh ? false : true;
+    this.iconSp.spriteFrame = this.isSwitchFinsh
+      ? this.cardSpriteFrame
+      : this.cardBfSpriteFame;
+  }
+  async setCardId(id, worldPostion?: cc.Vec2, size?: cc.Size) {
     this.id = id;
     let isHave = !(g_global.dataManager as WaterMaiginDataManager).getIsHaveCard(
       this.id
     );
     this.setGray(isHave);
-    this.iconSp.spriteFrame = g_global.getByKey("card" + this.id);
+    this.cardSpriteFrame = await UtilsCCC.getSpriteFrameByBundle(
+      this.id + "",
+      "iconcard"
+    );
+    this.iconSp.spriteFrame = this.cardSpriteFrame;
     this.isSwitchFinsh = true;
-    //let bfPos =  this.iconSp.node.getPosition()
-    //if(!!worldPostion){
-    //  let newPostion =  this.iconSp.node.parent.convertToNodeSpaceAR(worldPostion)
-    //  this.iconSp.node.setPosition(newPostion)
-    //  cc.log( newPostion.x,newPostion.y)
-    //  cc.log( this.iconSp.node.getPosition().x,this.iconSp.node.getPosition().y)
-    //  this.iconSp.node.setScale(0.5,0.5)
-    //}
-    //this.iconSp.node.setScale(0.1,0.1)
-
-    //let act = cc.spawn( [ cc.sequence([cc.scaleTo(0.1,0,0.5),cc.scaleTo(0.1,1,1)]) , cc.moveTo(1*0.08,bfPos) ] )
-    //this.iconSp.node.runAction(act)
   }
 
   setData(data) {
     super.setData(data);
     this.setCardId(data.cardId, data.worldPostion, data.size);
-  }
-  update() {
-    //let newPostion = this.iconSp.node.parent.convertToNodeSpaceAR(
-    //  this.data.worldPostion
-    //);
-    ////cc.log( newPostion.x,newPostion.y)
-    //this.iconSp.node.setPosition(newPostion);
   }
 }
