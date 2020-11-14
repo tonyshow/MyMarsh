@@ -39,7 +39,20 @@ export default class WaterMarginCard extends Interface {
         size: this.node.getContentSize(),
       });
     } else {
-      g_global.msgSys.showPrompt("未获得卡,赶紧去赚干脆面获得卡牌吧");
+      g_global.msgSys.showConfirm({
+        txt: "未获得卡,赶紧去赚干脆面获得卡牌吧",
+        right: {
+          btnTxt: "立即邀请",
+          btnCb: () => {
+            var ret = {
+              title: "最强水浒",
+              imageUrl:
+                "http://scpic.chinaz.net/files/pic/pic9/202011/bpic21698.jpg",
+            };
+            g_global.platform.doWxShare(ret);
+          },
+        },
+      });
     }
   }
 
@@ -49,7 +62,8 @@ export default class WaterMarginCard extends Interface {
       this.id
     );
     this.iconSp.spriteFrame = await UtilsCCC.getSpriteFrameByBundle(
-      this.id + "","iconcard"
+      this.id + "",
+      "iconcard"
     );
     this.setGray(isHave);
   }
