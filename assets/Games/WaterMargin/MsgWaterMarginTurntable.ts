@@ -1,6 +1,7 @@
 import _ from "underscore";
 import EnumPrefab from "../../Framework/Auto/EnumPrefab";
 import CompTurntable from "../../Framework/Components/CompTurntable";
+import EnumPrompt from "../../Framework/Interface/EnumPrompt";
 import MsgFullScreen from "../../Framework/Interface/Msg/MsgFullScreen";
 import g_global from "../../Script/GameGlobal";
 import WaterMaiginDataManager from "./Data/WaterMaiginDataManager";
@@ -54,11 +55,11 @@ export default class MsgWaterMarginTurntable extends MsgFullScreen {
   }
   onlookVido() {
     if (0 != this.isOpening) {
-      return g_global.msgSys.showPrompt("正在开奖中,点击干脆面开奖");
+      return g_global.msgSys.showPrompt({txt:"正在开奖中,点击干脆面开奖",type:EnumPrompt.WARN});
     }
 
     if (!(g_global.dataManager.player as WaterMarginPlayer).isHaveVidoCard()) {
-      return g_global.msgSys.showPrompt("今日视频卡已用尽请明天有送记得再来哦");
+      return g_global.msgSys.showPrompt({txt:"今日视频卡已用尽请明天有送记得再来哦",type:EnumPrompt.ERROR});
     }
     this.doOpen(1);
   }
@@ -72,10 +73,11 @@ export default class MsgWaterMarginTurntable extends MsgFullScreen {
   onGold() {
     if (0 != this.isOpening) {
       return g_global.msgSys.showPrompt("正在开奖中,点击干脆面开奖");
+
     }
     let dataManager = g_global.dataManager as WaterMaiginDataManager;
     if (dataManager.mySimplyFaceCnt <= 0) {
-      return g_global.msgSys.showPrompt("干脆面不够了");
+      return g_global.msgSys.showPrompt({txt:"干脆面不够了",type:EnumPrompt.WARN});
     }
     this.doOpen(2);
   }
