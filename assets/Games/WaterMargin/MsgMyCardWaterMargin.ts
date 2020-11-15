@@ -43,9 +43,15 @@ export default class MsgMyCardWaterMargin extends MsgFullScreen {
   @property({ tooltip: "倒计时", type: CompTimer })
   compTime: CompTimer = null;
 
+  @property({ tooltip: "头像", type: cc.Sprite })
+  headSp: cc.Sprite = null;
+
+
   simplyFaceCompList=[];
   async onLoad() {
     this.eveList.push(["refeshSimplyFace",this.refeshSimplyFace.bind(this)])
+    this.eveList.push(["onShareAppMessage",this.onShareAppMessage.bind(this)])
+
     await super.onLoad();
     this.enterMySimplyFace();
     //this.enterMyCards()
@@ -106,6 +112,23 @@ export default class MsgMyCardWaterMargin extends MsgFullScreen {
       this.refeshSimplyFace();
       this.compTime.refreshEndTime(dataManager.getNextSimplyFaceTime(),EnumTime.TIMESTAMP);
     });
+
+    //加载头像
+    let userInfo	= dataManager.player.get('userInfo')
+    if(!!userInfo && !!userInfo.avatarUrl){
+
+      userInfo.avatarUrl= userInfo.avatarUrl.replace('http://thirdwx.qlogo.cn', 'https://wx.qlogo.cn')
+      userInfo.avatarUrl= userInfo.avatarUrl.replace('https://thirdwx.qlogo.cn', 'https://wx.qlogo.cn')
+
+      cc.assetManager.loadRemote<cc.Texture2D>( userInfo.avatarUrl, {ext: '.png'}, (err: Error, texture: cc.Texture2D) =>{
+        if(!!err){
+          cc.error(err)
+          return;
+        }
+        this.headSp.spriteFrame = new cc.SpriteFrame(texture);
+      } );
+    }
+
   }
   refeshSimplyFace(){
     let dataManager:WaterMaiginDataManager = g_global.dataManager as WaterMaiginDataManager
@@ -113,6 +136,11 @@ export default class MsgMyCardWaterMargin extends MsgFullScreen {
       this.simplyFaceCompList[i].setHave(i<dataManager.getMySimplyFaceCnt())
     }
   }
+  onShareAppMessage(){
+    let dataManager:WaterMaiginDataManager = g_global.dataManager as WaterMaiginDataManager
+    dataManager.addSimplyFace(1)
+  }
+
   enterMyCards() {
     this.buttonCards.setScale(1.06);
     this.buttonSimplyFace.setScale(1);
@@ -142,6 +170,11 @@ export default class MsgMyCardWaterMargin extends MsgFullScreen {
   }
   onClickArrowRight() {
     this.myCardPageView.scrollRight();
+  }
+
+  onClickHead(){
+    let player =  ( g_global.dataManager as WaterMaiginDataManager).player ;
+    g_global.msgManager.show(EnumPrefab.MsgWaterMarginPlayer,player)
   }
 
   openTurntable(){

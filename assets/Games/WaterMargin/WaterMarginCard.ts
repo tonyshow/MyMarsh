@@ -1,3 +1,4 @@
+import _ from "underscore";
 import EnumPrefab from "../../Framework/Auto/EnumPrefab";
 import Interface from "../../Framework/Interface/Interface";
 import UtilsCCC from "../../Framework/Utils/UtilsCCC";
@@ -17,7 +18,31 @@ export default class WaterMarginCard extends Interface {
   @property({ tooltip: "灰色材质", type: cc.Material })
   grayMaterial: cc.Material = null;
 
+  @property({ tooltip: "等级材质", type: [cc.Material] })
+  leveMaterials: cc.Material[] = Array<cc.Material>();
+
+  @property({ tooltip: "卡牌数量", type: cc.Node })
+  cardCntNode: cc.Node = null;
+
+  @property({ tooltip: "卡牌数量", type: cc.Label })
+  cardCntLabel: cc.Label = null;
+
+  @property({ tooltip: "等级", type: cc.Label })
+  cardLevelLabel: cc.Label = null;
+
+  @property({ tooltip: "等级", type: cc.Node })
+  cardLevelNode: cc.Node = null;
+
+  @property({ tooltip: "升级特效", type: cc.Node })
+  upEffect: cc.Node = null;
+
+  @property({ tooltip: "赤橙黄绿青蓝紫rgb值", type: [cc.Color] })
+  colors: cc.Color[] = Array<cc.Color>();
+
   async onLoad() {
+    this.cardCntNode.active = false;
+    this.cardLevelNode.active = false;
+    this.upEffect.active = false;
     await super.onLoad();
     let button = this.node.getComponent(cc.Button);
     if (!button) {
@@ -57,6 +82,9 @@ export default class WaterMarginCard extends Interface {
   }
 
   async setCardId(id) {
+    let cnt = (g_global.dataManager as WaterMaiginDataManager).getCardCnt(id);
+    this.cardCntLabel.string = cnt.toString();
+
     this.id = id;
     let isHave = !(g_global.dataManager as WaterMaiginDataManager).getIsHaveCard(
       this.id
@@ -69,15 +97,46 @@ export default class WaterMarginCard extends Interface {
   }
 
   setGray(isGray: boolean = false) {
-    this.iconSp.setMaterial(
-      0,
-      !!isGray ? this.grayMaterial : this.spriteMaterial
+    let level = (g_global.dataManager as WaterMaiginDataManager).getCardLevel(
+      this.id
     );
+    this.iconSp.setMaterial(0, this.leveMaterials[level]);
+    this.cardCntNode.active = !isGray;
+    this.cardLevelNode.active = !isGray;
+    this.refreshLevel(this.id);
+    let isCanUpLevel = (g_global.dataManager as WaterMaiginDataManager).getIsCanUpLevel(
+      this.id
+    );
+    if (!!isCanUpLevel) {
+      this.openUpEffect();
+    } else {
+      this.closeEffect();
+    }
   }
-
   refreshCard(id) {
     if (this.id === id) {
       this.setGray(false);
+      let cnt = (g_global.dataManager as WaterMaiginDataManager).getCardCnt(id);
+      this.cardCntLabel.string = cnt.toString();
+      this.refreshLevel(id);
     }
+  }
+
+  refreshLevel(id) {
+    if (this.id === id) {
+      this.upEffect.active = true;
+      let level = (g_global.dataManager as WaterMaiginDataManager).getCardLevel(id);
+      this.cardLevelLabel.string = level.toString();
+      this.upEffect.color = this.colors[level];
+    }
+  }
+
+  openUpEffect() {
+    this.upEffect.active = true;
+    let act = cc.sequence(cc.fadeOut(0.6), cc.fadeIn(0.6));
+    this.upEffect.runAction(cc.repeatForever(act));
+  }
+  closeEffect() {
+    this.upEffect.stopAllActions();
   }
 }

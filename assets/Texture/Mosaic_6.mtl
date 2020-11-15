@@ -1,21 +1,17 @@
 {
   "__type__": "cc.Material",
-  "_name": "Mosaic",
+  "_name": "Mosaic_6",
   "_objFlags": 0,
   "_native": "",
   "_effectAsset": {
-    "__uuid__": "a1fc7bc6-044e-4a9d-9fdf-b825c7a3c359"
+    "__uuid__": "bc7d184a-452d-4126-b3a8-6e2fefe0886f"
   },
   "_techniqueIndex": 0,
   "_techniqueData": {
     "0": {
       "props": {
-        "x_count": 50,
-        "y_count": 50,
-        "gray_r_count": 0.1,
-        "gray_g_count": 0.1,
-        "gray_b_count": 0.1,
-        "is_gray": 1
+        "x_count": 90,
+        "y_count": 90
       },
       "defines": {
         "USE_TEXTURE": true,

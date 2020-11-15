@@ -14,10 +14,6 @@ CCEffect %{
         texture: { value: white }
         x_count: { value: 100.0 }
         y_count: { value: 100.0 }
-        gray_r_count: { value: 100.0 }
-        gray_g_count: { value: 100.0 }
-        gray_b_count: { value: 100.0 }
-        is_gray: { value: 0 }
 }%
 
 
@@ -69,10 +65,6 @@ CCProgram fs %{
   uniform ARGS{
     float x_count;
     float y_count;
-    float gray_r_count;
-    float gray_g_count;
-    float gray_b_count;
-    int is_gray;
   };
 
   vec2 getUvMapPos() {
@@ -100,15 +92,8 @@ CCProgram fs %{
     float _r = o.r * 0.393 + o.g * 0.769 + o.b * 0.189;
     float _g = o.r * 0.349 + o.g * 0.686 + o.b * 0.168;
     float _b = o.r * 0.272 + o.g * 0.534 + o.b * 0.131;
-    #if USE_MASAIC
-      if( is_gray==1 ){
-        float gray = 0.2126*o.r + 0.7152*o.g + 0.0722*o.b;
-        o = vec4(gray, gray, gray, o.a);
-        gl_FragColor = o;
-      }else{
-        gl_FragColor = o;
-      }
-    #endif
-
+    float gray = 0.2126*o.r + 0.7152*o.g + 0.0722*o.b;
+    o = vec4(gray, gray, gray, o.a);
+    gl_FragColor = o;
   }
 }%

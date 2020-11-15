@@ -18,6 +18,12 @@ export default class MsgWaterMarginCardShow extends MsgFullScreen {
   @property({ tooltip: "灰色材质", type: cc.Material })
   grayMaterial: cc.Material = null;
 
+  @property({ tooltip: "等级材质", type: [cc.Material] })
+  leveMaterials: cc.Material[] = Array<cc.Material>();
+
+  @property({ tooltip: "升级品质按钮", type: cc.Node })
+  btnUpLevel: cc.Node = null;
+
   isSwitchFinsh = false;
   isGray = false;
   cardSpriteFrame = null;
@@ -65,16 +71,16 @@ export default class MsgWaterMarginCardShow extends MsgFullScreen {
     this.onClose();
   }
 
-  setGray(isGray: boolean = false) {
+  refreshCard(isGray: boolean = false) {
     this.isGray = isGray;
-    if (!!isGray) {
-      this.grayMaterial.setProperty(`x_count`, 100);
-      this.grayMaterial.setProperty(`y_count`, 100);
-    }
-    this.iconSp.setMaterial(
-      0,
-      !!isGray ? this.grayMaterial : this.spriteMaterial
+    let level = (g_global.dataManager as WaterMaiginDataManager).getCardLevel(
+      this.id
     );
+    this.iconSp.setMaterial(0, this.leveMaterials[level]);
+
+    this.btnUpLevel.active = !(g_global.dataManager as WaterMaiginDataManager).isMaxCardLevel(
+      this.id
+    )
   }
 
   async onClickCard() {
@@ -116,7 +122,7 @@ export default class MsgWaterMarginCardShow extends MsgFullScreen {
     let isHave = !(g_global.dataManager as WaterMaiginDataManager).getIsHaveCard(
       this.id
     );
-    this.setGray(isHave);
+    this.refreshCard(isHave);
     this.cardSpriteFrame = await UtilsCCC.getSpriteFrameByBundle(
       this.id + "",
       "iconcard"
@@ -128,5 +134,42 @@ export default class MsgWaterMarginCardShow extends MsgFullScreen {
   setData(data) {
     super.setData(data);
     this.setCardId(data.cardId, data.worldPostion, data.size);
+  }
+
+  onUpLevel() {
+    let isCanUp = (g_global.dataManager as WaterMaiginDataManager).getIsCanUpLevel(
+      this.id
+    );
+    if (!!isCanUp) {
+      let newLevel = (g_global.dataManager as WaterMaiginDataManager).doUpLevelCard(
+        this.id
+      );
+      this.refreshCard(true);
+      g_global.msgSys.showPrompt(`成功升级至${newLevel}级`);
+    } else {
+      let needCnt = (g_global.dataManager as WaterMaiginDataManager).needCardCanUp(
+        this.id
+      );
+      if (
+        !(g_global.dataManager as WaterMaiginDataManager).isMaxCardLevel(
+          this.id
+        )
+      ) {
+        g_global.msgSys.showConfirm({
+          txt: `还差${needCnt}张就可以升级更高品质,邀请好友获取更多卡牌`,
+          right: {
+            btnTxt: "邀请助力",
+            btnCb: () => {
+              var ret = {
+                title: "最强水浒",
+                imageUrl:
+                  "http://scpic.chinaz.net/files/pic/pic9/202011/bpic21698.jpg",
+              };
+              g_global.platform.doWxShare(ret);
+            },
+          },
+        });
+      }
+    }
   }
 }

@@ -30,7 +30,7 @@ export default class MsgWaterMarginTurntable extends MsgFullScreen {
   nodeSimplyFace: cc.Node = null;
 
   async onLoad() {
-    this.eveList.push(["onShareAppMessage", this.onShareAppMessage.bind(this)]);
+    //this.eveList.push(["onShareAppMessage", this.onShareAppMessage.bind(this)]);
     await super.onLoad();
     this.btnClose.on("click", this.onClose, this);
     let scale = cc.winSize.width / 600;
@@ -77,7 +77,22 @@ export default class MsgWaterMarginTurntable extends MsgFullScreen {
     }
     let dataManager = g_global.dataManager as WaterMaiginDataManager;
     if (dataManager.mySimplyFaceCnt <= 0) {
-      return g_global.msgSys.showPrompt({txt:"干脆面不够了",type:EnumPrompt.WARN});
+      g_global.msgSys.showConfirm({
+        txt: "干脆面不够了,邀请好友助力下",
+        right: {
+          btnTxt: "邀请助力",
+          btnCb: () => {
+            var ret = {
+              title: "最强水浒",
+              imageUrl:
+                "http://scpic.chinaz.net/files/pic/pic9/202011/bpic21698.jpg",
+            };
+            g_global.platform.doWxShare(ret);
+          },
+        },
+      });
+
+      return
     }
     this.doOpen(2);
   }
