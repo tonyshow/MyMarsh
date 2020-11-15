@@ -12,6 +12,10 @@ export default class WaterMaiginDataManager extends DataManager {
   constructor(args) {
     super(args);
   }
+  //随机出卡
+  public randCardId(){
+
+  }
   //初始化下一次获取热干面的时间
   public initNextSimplyFaceTime() {
     let nowTime = Date.now();

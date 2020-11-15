@@ -151,7 +151,8 @@ export default class MsgWaterMarginTurntable extends MsgFullScreen {
       } else if (2 == this.isOpening) {
         dataManager.reduceSimplyFace();
       }
-      let randId = _.random(1, 109);
+      let randId =g_global.cardTool.randCardId();
+
       dataManager.addCard(randId);
 
       let worldPostion = this.nodeSimplyFace.convertToWorldSpaceAR(cc.Vec2.ZERO);
