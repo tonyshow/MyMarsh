@@ -1,3 +1,4 @@
+import _ from "underscore";
 import DataManager from "../../../Framework/Manager/DataManager/DataManager";
 import g_global from "../../../Script/GameGlobal";
 export default class WaterMaiginDataManager extends DataManager {
@@ -177,7 +178,7 @@ export default class WaterMaiginDataManager extends DataManager {
   public addCard(id, cnt?) {
     cnt = null == cnt ? 1 : cnt;
     if (null == this.myAllCard[id]) {
-      this.myAllCard[id] = { cnt: cnt, level: 1 };
+      this.myAllCard[id] = { cnt: cnt, level: 7 };
     } else {
       this.myAllCard[id].cnt += cnt;
     }

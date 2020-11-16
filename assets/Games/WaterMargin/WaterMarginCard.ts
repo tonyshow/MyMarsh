@@ -101,7 +101,7 @@ export default class WaterMarginCard extends Interface {
       this.id
     );
     this.iconSp.setMaterial(0, this.leveMaterials[level]);
-    this.cardCntNode.active = !isGray;
+    //this.cardCntNode.active = !isGray;
     this.cardLevelNode.active = !isGray;
     this.refreshLevel(this.id);
     let isCanUpLevel = (g_global.dataManager as WaterMaiginDataManager).getIsCanUpLevel(

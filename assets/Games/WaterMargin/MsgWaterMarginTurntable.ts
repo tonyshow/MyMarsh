@@ -55,11 +55,17 @@ export default class MsgWaterMarginTurntable extends MsgFullScreen {
   }
   onlookVido() {
     if (0 != this.isOpening) {
-      return g_global.msgSys.showPrompt({txt:"正在开奖中,点击干脆面开奖",type:EnumPrompt.WARN});
+      return g_global.msgSys.showPrompt({
+        txt: "正在开奖中,点击干脆面开奖",
+        type: EnumPrompt.WARN,
+      });
     }
 
     if (!(g_global.dataManager.player as WaterMarginPlayer).isHaveVidoCard()) {
-      return g_global.msgSys.showPrompt({txt:"今日视频卡已用尽请明天有送记得再来哦",type:EnumPrompt.ERROR});
+      return g_global.msgSys.showPrompt({
+        txt: "今日视频卡已用尽请明天有送记得再来哦",
+        type: EnumPrompt.ERROR,
+      });
     }
     this.doOpen(1);
   }
@@ -73,7 +79,6 @@ export default class MsgWaterMarginTurntable extends MsgFullScreen {
   onGold() {
     if (0 != this.isOpening) {
       return g_global.msgSys.showPrompt("正在开奖中,点击干脆面开奖");
-
     }
     let dataManager = g_global.dataManager as WaterMaiginDataManager;
     if (dataManager.mySimplyFaceCnt <= 0) {
@@ -92,7 +97,7 @@ export default class MsgWaterMarginTurntable extends MsgFullScreen {
         },
       });
 
-      return
+      return;
     }
     this.doOpen(2);
   }
@@ -125,19 +130,18 @@ export default class MsgWaterMarginTurntable extends MsgFullScreen {
     this.isOpening = type;
     let x = this.nodeSimplyFace.x;
     let y = this.nodeSimplyFace.y;
-    let action = cc.repeatForever(
-      cc.sequence(
-        cc.moveTo(0.018, this.getRandV2(x, y)),
-        cc.moveTo(0.018, this.getRandV2(x, y)),
-        cc.moveTo(0.018, this.getRandV2(x, y)),
-        cc.moveTo(0.018, this.getRandV2(x, y)),
-        cc.moveTo(0.018, this.getRandV2(x, y)),
-        cc.moveTo(0.018, this.getRandV2(x, y)),
-        cc.moveTo(0.018, this.getRandV2(x, y)),
-        cc.moveTo(0.018, this.getRandV2(x, y)),
-        cc.moveTo(0.018, this.getRandV2(x, y))
-      )
+    let acts = [];
+    for (let i = 0; i < 100; ++i) {
+      acts.push(cc.moveTo(0.05, this.getRandV2(x, y)));
+    }
+    acts.push(cc.moveTo(0.03, x, y));
+    acts.push(
+      cc.callFunc(() => {
+        this.onClickOpen();
+      })
     );
+    let action = cc.sequence(acts);
+    //action = cc.repeatForever(action;
     this.nodeSimplyFace.runAction(action);
   }
   onClickOpen() {
@@ -151,11 +155,13 @@ export default class MsgWaterMarginTurntable extends MsgFullScreen {
       } else if (2 == this.isOpening) {
         dataManager.reduceSimplyFace();
       }
-      let randId =g_global.cardTool.randCardId();
+      let randId = g_global.cardTool.randCardId();
 
       dataManager.addCard(randId);
 
-      let worldPostion = this.nodeSimplyFace.convertToWorldSpaceAR(cc.Vec2.ZERO);
+      let worldPostion = this.nodeSimplyFace.convertToWorldSpaceAR(
+        cc.Vec2.ZERO
+      );
       g_global.msgManager.show(EnumPrefab.MsgWaterMarginCardShow, {
         cardId: randId,
         worldPostion: worldPostion,
