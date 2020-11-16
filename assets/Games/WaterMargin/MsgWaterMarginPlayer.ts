@@ -1,5 +1,4 @@
 import MsgBox from "../../Framework/Interface/Msg/MsgBox";
-import g_global from "../../Script/GameGlobal";
 
 const { ccclass, property } = cc._decorator;
 @ccclass

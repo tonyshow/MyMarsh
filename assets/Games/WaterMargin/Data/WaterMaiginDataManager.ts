@@ -10,12 +10,31 @@ export default class WaterMaiginDataManager extends DataManager {
   cardMaxCnt = 109; //卡牌总数
   nextSimplyFaceTime: number = 0; //下一个干脆面获得时间
   simplyFaceTimeSpace: number = 0.5 * 60 * 60 * 1000; //一个小时获得一个干脆面
+
+  shareImgNativeUrl:string="";//分享给还有的图片
   constructor(args) {
     super(args);
   }
-  //随机出卡
-  public randCardId(){
-
+  /**
+   * 获得分享信息
+   */
+  public getShareInfo(){
+    var ret = {
+      title: "Q水浒",
+      imageUrl: this.shareImgNativeUrl,
+    };
+    return ret;
+  }
+  public initShareImage(){
+    return new Promise<string>( (resolve ,reject)=>{
+      cc.resources.load("WaterMaiginShareIcon", (err, data) => {
+        if (!!err) {
+          reject(err)
+        } else {
+          resolve(data.nativeUrl)
+        }
+      });
+    } )
   }
   //初始化下一次获取热干面的时间
   public initNextSimplyFaceTime() {
@@ -111,11 +130,12 @@ export default class WaterMaiginDataManager extends DataManager {
       this.mySimplyFaceCnt = Number(this.mySimplyFaceCnt);
     }
   }
-  public refreshLocalData() {
+  public async init() {
     this.initSimplyFaceCnt();
     this.initNextSimplyFaceTime();
     this.initMyAllCard();
     //---------------------------------------------------------
+    this.shareImgNativeUrl = await this.initShareImage()
   }
   public getStaticAllCard() {
     return this.staticAllCard;

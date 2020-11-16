@@ -6,7 +6,7 @@ const { ccclass, property } = cc._decorator;
 @ccclass
 export default class WaterMargin extends cc.Component {
   async onLoad() {
-    (g_global.dataManager as WaterMaiginDataManager).refreshLocalData();
+    await (g_global.dataManager as WaterMaiginDataManager).init();
     g_global.msgManager.show(EnumPrefab.MsgMyCardWaterMargin);
     g_global.init();
   }

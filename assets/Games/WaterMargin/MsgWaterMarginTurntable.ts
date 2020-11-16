@@ -30,7 +30,7 @@ export default class MsgWaterMarginTurntable extends MsgFullScreen {
   nodeSimplyFace: cc.Node = null;
 
   async onLoad() {
-    //this.eveList.push(["onShareAppMessage", this.onShareAppMessage.bind(this)]);
+    this.eveList.push(["onShareAppMessage", this.onShareAppMessage.bind(this)]);
     await super.onLoad();
     this.btnClose.on("click", this.onClose, this);
     let scale = cc.winSize.width / 600;
@@ -50,8 +50,13 @@ export default class MsgWaterMarginTurntable extends MsgFullScreen {
   finshResult(result) {
     g_global.msgSys.showPrompt("恭喜你抽中" + result + "位置的奖品");
   }
-  onShareAppMessage() {
-    this.doOpen(1);
+  onShareAppMessage(defalurInfo) {
+    if ("MsgWaterMarginTurntable" == defalurInfo) {
+      g_global.msgSys.showPrompt({
+        txt: "邀请好友,成功获得干脆面!!!",
+        type: EnumPrompt.NONE,
+      });
+    }
   }
   onlookVido() {
     if (0 != this.isOpening) {
@@ -70,11 +75,11 @@ export default class MsgWaterMarginTurntable extends MsgFullScreen {
     this.doOpen(1);
   }
   onShare() {
-    var ret = {
-      title: "最强水浒",
-      imageUrl: "http://scpic.chinaz.net/files/pic/pic9/202011/bpic21698.jpg",
-    };
-    g_global.platform.doWxShare(ret);
+    let dataManager = g_global.dataManager as WaterMaiginDataManager;
+    g_global.platform.doWxShare(
+      dataManager.getShareInfo(),
+      "MsgWaterMarginTurntable"
+    );
   }
   onGold() {
     if (0 != this.isOpening) {
@@ -87,12 +92,10 @@ export default class MsgWaterMarginTurntable extends MsgFullScreen {
         right: {
           btnTxt: "邀请助力",
           btnCb: () => {
-            var ret = {
-              title: "最强水浒",
-              imageUrl:
-                "http://scpic.chinaz.net/files/pic/pic9/202011/bpic21698.jpg",
-            };
-            g_global.platform.doWxShare(ret);
+            g_global.platform.doWxShare(
+              dataManager.getShareInfo(),
+              "MsgWaterMarginTurntable"
+            );
           },
         },
       });

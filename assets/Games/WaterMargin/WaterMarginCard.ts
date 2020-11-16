@@ -1,5 +1,6 @@
 import _ from "underscore";
 import EnumPrefab from "../../Framework/Auto/EnumPrefab";
+import EnumPrompt from "../../Framework/Interface/EnumPrompt";
 import Interface from "../../Framework/Interface/Interface";
 import UtilsCCC from "../../Framework/Utils/UtilsCCC";
 import g_global from "../../Script/GameGlobal";
@@ -50,8 +51,13 @@ export default class WaterMarginCard extends Interface {
     }
     this.node.on("click", this.onClick, this);
     this.eveList.push(["addCard", this.refreshCard.bind(this)]);
+    this.eveList.push(["onShareAppMessage", this.onShareAppMessage.bind(this)]);
   }
-
+  onShareAppMessage(defalurInfo){
+    if('WaterMarginCard'==defalurInfo){
+      g_global.msgSys.showPrompt({txt:"邀请好友,成功获得干脆面!!!",type:EnumPrompt.NONE})
+    }
+  }
   onClick(eve) {
     let isHave = (g_global.dataManager as WaterMaiginDataManager).getIsHaveCard(
       this.id
@@ -69,12 +75,8 @@ export default class WaterMarginCard extends Interface {
         right: {
           btnTxt: "立即邀请",
           btnCb: () => {
-            var ret = {
-              title: "最强水浒",
-              imageUrl:
-                "http://scpic.chinaz.net/files/pic/pic9/202011/bpic21698.jpg",
-            };
-            g_global.platform.doWxShare(ret);
+            let dataManager = g_global.dataManager as WaterMaiginDataManager;
+            g_global.platform.doWxShare(dataManager.getShareInfo(),"WaterMarginCard");
           },
         },
       });

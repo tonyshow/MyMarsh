@@ -160,12 +160,8 @@ export default class MsgWaterMarginCardShow extends MsgFullScreen {
           right: {
             btnTxt: "邀请助力",
             btnCb: () => {
-              var ret = {
-                title: "最强水浒",
-                imageUrl:
-                  "http://scpic.chinaz.net/files/pic/pic9/202011/bpic21698.jpg",
-              };
-              g_global.platform.doWxShare(ret);
+              let dataManager = g_global.dataManager as WaterMaiginDataManager;
+              g_global.platform.doWxShare(dataManager.getShareInfo(),"MsgWaterMarginCardShow");
             },
           },
         });
