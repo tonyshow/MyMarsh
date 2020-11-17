@@ -5,10 +5,10 @@
       "main": true,
       "url": "app://editor/index.html",
       "windowType": "dockable",
-      "x": 61,
-      "y": 23,
-      "width": 1379,
-      "height": 877,
+      "x": 0,
+      "y": 0,
+      "width": 1440,
+      "height": 900,
       "layout": {
         "children": [
           {
@@ -18,7 +18,7 @@
                 "children": [
                   "hierarchy"
                 ],
-                "height": 226,
+                "height": 374.765625,
                 "type": "panel",
                 "width": 387
               },
@@ -27,7 +27,7 @@
                 "children": [
                   "assets"
                 ],
-                "height": 564.5,
+                "height": 415.734375,
                 "type": "panel",
                 "width": 387
               }
@@ -103,17 +103,31 @@
         "inspector",
         "cocos-services"
       ]
-    }
+    },
+    "window-1605606183838": {}
   },
   "panels": {
     "builder": {
-      "x": 337,
-      "y": 40,
+      "x": 300,
+      "y": 55,
       "width": 729,
       "height": 777
+    },
+    "sprite-editor": {
+      "x": 439,
+      "y": 177,
+      "width": 500,
+      "height": 522
+    },
+    "project-settings": {
+      "x": 55,
+      "y": 23,
+      "width": 1385,
+      "height": 877
     }
   },
   "panelLabelWidth": {
-    "builder": null
+    "builder": null,
+    "inspector": null
   }
 }
