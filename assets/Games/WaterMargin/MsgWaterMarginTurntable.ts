@@ -5,7 +5,7 @@ import EnumPrompt from "../../Framework/Interface/EnumPrompt";
 import MsgFullScreen from "../../Framework/Interface/Msg/MsgFullScreen";
 import g_global from "../../Script/GameGlobal";
 import WaterMaiginDataManager from "./Data/WaterMaiginDataManager";
-import WaterMarginPlayer from "./WaterMarginPlayer";
+import WaterMarginPlayer from "./Data/WaterMarginPlayer";
 
 const { ccclass, property } = cc._decorator;
 @ccclass

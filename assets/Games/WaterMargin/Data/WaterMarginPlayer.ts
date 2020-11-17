@@ -1,4 +1,4 @@
-import Player from "../../Framework/Data/Player"
+import Player from "../../../Framework/Data/Player"
 
 export default class WaterMarginPlayer extends Player{
   public vidoCardCnt:number = 0;//视频卡数量

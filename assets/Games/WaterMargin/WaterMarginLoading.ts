@@ -23,8 +23,24 @@ export default class WaterMarginLoading extends cc.Component {
     this.progressBar.progress = 1;
     this.loading.active = false;
     this.btnLogin.active = true;
+
+    let info = await g_global.platform.authorize();
+    if (null == info) {
+      info = await g_global.platform.addWxLoginBtn().catch(()=>{
+          g_global.msgSys.showPrompt("微信授权失败")
+      })
+      this.doLoginSuccess(info);
+      return;
+    }
+    this.doLoginSuccess(info);
   }
 
+  doLoginSuccess(info) {
+    g_global.platform.emitLogin();
+    g_global.msgSys.showPrompt(JSON.stringify(info));
+    (g_global.dataManager as WaterMaiginDataManager).player.reset(info);
+    g_global.scene.goScene("WaterMargin");
+  }
   //加载
   loadRes(bundle, name) {
     return new Promise<cc.SpriteFrame>((resolve, reject) => {
@@ -38,13 +54,19 @@ export default class WaterMarginLoading extends cc.Component {
     });
   }
 
-  async doLogin() {
-    try {
-      let info =  await g_global.platform.authorize();
-      ( g_global.dataManager as WaterMaiginDataManager).player.reset(info);
-      g_global.scene.goScene("WaterMargin");
-    } catch (error) {
-      g_global.msgSys.showPrompt(error);
-    }
-  }
+  //async doLogin() {
+
+  //  try {
+  //    let info =  await g_global.platform.authorize();
+  //    if(null==info){
+  //      g_global.msgSys.showPrompt("授权失败2");
+  //       return
+  //    }
+  //    g_global.msgSys.showPrompt(JSON.stringify(info));
+  //    ( g_global.dataManager as WaterMaiginDataManager).player.reset(info);
+  //    g_global.scene.goScene("WaterMargin");
+  //  } catch (error) {
+  //    g_global.msgSys.showPrompt(error);
+  //  }
+  //}
 }

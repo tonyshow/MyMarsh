@@ -9,7 +9,7 @@ export default class WaterMaiginDataManager extends DataManager {
 
   cardMaxCnt = 109; //卡牌总数
   nextSimplyFaceTime: number = 0; //下一个干脆面获得时间
-  simplyFaceTimeSpace: number = 0.5 * 60 * 60 * 1000; //一个小时获得一个干脆面
+  simplyFaceTimeSpace: number = 30 * 60 * 1000; //一个小时获得一个干脆面
 
   shareImgNativeUrl:string="";//分享给还有的图片
   constructor(args) {
@@ -56,13 +56,8 @@ export default class WaterMaiginDataManager extends DataManager {
         let outTime = nowTime - this.nextSimplyFaceTime;
         let addSimplyFaceCnt = Math.floor(outTime / this.simplyFaceTimeSpace);
         this.addSimplyFace(addSimplyFaceCnt);
-        this.nextSimplyFaceTime =
-          (addSimplyFaceCnt + 1) * this.simplyFaceTimeSpace +
-          this.nextSimplyFaceTime;
-        g_global.platform.localStorageSetItem(
-          "nextSimplyFaceTime",
-          this.nextSimplyFaceTime
-        );
+        this.nextSimplyFaceTime = (addSimplyFaceCnt) * this.simplyFaceTimeSpace +  this.nextSimplyFaceTime;
+        g_global.platform.localStorageSetItem("nextSimplyFaceTime",this.nextSimplyFaceTime);
       }
     }
   }
